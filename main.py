@@ -1,6 +1,7 @@
 import io
 import time
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Response
+from fastapi.responses import RedirectResponse
 import modal
 
 # Define the environment and dependencies for Modal
@@ -14,6 +15,12 @@ image = modal.Image.debian_slim().pip_install(
 # Initialize the Modal App and FastAPI
 app = modal.App("heic-converter-app")
 web_app = FastAPI(title="Advanced HEIC Converter API")
+
+# New route for redirect
+@web_app.get("/", include_in_schema=False)
+async def redirect_to_docs():
+    """Redirects the base URL to the interactive API documentation."""
+    return RedirectResponse(url="/docs")
 
 @web_app.post("/convert/")
 async def convert_image(
