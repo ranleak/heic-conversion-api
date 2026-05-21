@@ -99,7 +99,11 @@ async def convert_image(
         raise HTTPException(status_code=500, detail=f"Error converting image: {str(e)}")
 
 # Bind the FastAPI app to Modal
-@app.function(image=image)
+@app.function(
+    image=image,
+    cpu=8.0,
+    memory=2048
+    )
 @modal.asgi_app()
 def fastapi_app():
     return web_app
